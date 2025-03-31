@@ -14,11 +14,11 @@ interface Post {
   export const dynamicParams = true // or false, to 404 on unknown paths
    
   export async function generateStaticParams() {
-    const posts: Post[] = await fetch('https://victorious-wisdom-f9f44dd049.strapiapp.com/api/articles').then((res) =>
+    const posts: any = await fetch('https://victorious-wisdom-f9f44dd049.strapiapp.com/api/articles').then((res) =>
       res.json()
     )
-    console.log(posts)
-    return posts && posts.map((post: any) => ({
+    console.log(posts?.data)
+    return posts.data.map((post: any) => ({
       id: String(post.documentId),
     }))
   }
