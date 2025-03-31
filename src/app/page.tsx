@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 // ✅ 2. 使用 ISR 让数据 60 秒后自动刷新
 export const revalidate = 60;
 
-export default async function Home({ params }: { params: { lang: string } }) {
+export default async function Home({ params }: any ) {
   const { lang } = params;
   const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
   if (!token) throw new Error("The Strapi API Token environment variable is not set.");
