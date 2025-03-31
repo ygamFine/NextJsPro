@@ -1,7 +1,7 @@
 interface Post {
     id: string
     title: string
-    content: string
+    description: string
   }
    
   // Next.js will invalidate the cache when a
@@ -17,7 +17,8 @@ interface Post {
     const posts: Post[] = await fetch('https://victorious-wisdom-f9f44dd049.strapiapp.com/api/articles').then((res) =>
       res.json()
     )
-    return posts.map((post: any) => ({
+    console.log(posts)
+    return posts && posts.map((post: any) => ({
       id: String(post.documentId),
     }))
   }
