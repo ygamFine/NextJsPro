@@ -4,9 +4,12 @@ import "@/app/style/home.css";
 
 // ✅ 1. 生成 SSG 静态页面参数（支持多语言）
 export async function generateStaticParams() {
-  const i18nResponse = await fetchAPI("/i18n/locales");
-  const locales = i18nResponse?.map((locale: any) => locale.code) || ["en"]; // 默认英语
-  return locales.map((lang: string) => ({ lang }));
+  // const i18nResponse = await fetchAPI("/i18n/locales");
+  // const locales = i18nResponse?.map((locale: any) => locale.code) || ["en"]; // 默认英语
+  // return locales.map((lang: string) => ({ lang }));
+  const menusResponse = await fetchAPI(`/menus`, { next: { revalidate: 60 } });
+  const menuData = menusResponse?.data || [];
+  return menuData
 }
 
 // ✅ 2. 使用 ISR 让数据 60 秒后自动刷新
