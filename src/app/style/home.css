@@ -1,0 +1,19 @@
+.home{
+    width: 1200px;
+    margin: 0 auto;
+}
+.home .menu li{
+    cursor: pointer;
+}
+.home .ltd{
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.home .menu{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1f0ffa;
+}
