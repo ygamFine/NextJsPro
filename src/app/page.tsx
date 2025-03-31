@@ -12,13 +12,13 @@ export async function generateStaticParams() {
 }
 
 
-export default async function Home({ lang }: { lang: string; menuData: any[] }) {
-  console.log('当前语言', lang)
+export default async function Home({ params }: { params: { lang: string } }) {
+  const { lang } = params;
   const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
   if (!token) throw new Error("The Strapi API Token environment variable is not set.");
 
   const options = { headers: { Authorization: `Bearer ${token}` } };
-  const menusResponse = await fetchAPI(`/menus?locale=${lang || 'en'}`);
+  const menusResponse = await fetchAPI(`/menus?locale=${params.lang || 'en'}`);
   const menuData = menusResponse.data || [];
 
   // const response = await fetchAPI("/menus", options);
