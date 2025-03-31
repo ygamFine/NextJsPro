@@ -23,7 +23,7 @@ export default async function Home({ params }: any ) {
   const i18nResponse = await fetchAPI("/i18n/locales", { next: { revalidate: 60 } });
 
   // 获取当前语言的菜单数据（60 秒后自动刷新）
-  const menusResponse = await fetchAPI(`/menus?locale=${lang || "en"}`, { next: { revalidate: 60 } });
+  const menusResponse = await fetchAPI(`/menus`, { next: { revalidate: 60 } });
   const menuData = menusResponse?.data || [];
   console.log(menuData)
 
