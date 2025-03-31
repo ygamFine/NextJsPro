@@ -25,6 +25,7 @@ export default async function Home({ params }: any ) {
   // 获取当前语言的菜单数据（60 秒后自动刷新）
   const menusResponse = await fetchAPI(`/menus?locale=${lang || "en"}`, { next: { revalidate: 60 } });
   const menuData = menusResponse?.data || [];
+  console.log(menuData)
 
   return (
     <div className="home min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
