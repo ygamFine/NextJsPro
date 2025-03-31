@@ -22,7 +22,7 @@ interface Post {
       id: String(post.documentId),
     }))
   }
-   
+
   export default async function Page({
     params,
   }: {
