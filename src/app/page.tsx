@@ -12,23 +12,6 @@ export async function generateStaticParams() {
 }
 
 
-// 该函数会在构建时执行，用于获取菜单数据
-export async function getMenuData({ params }: { params: { lang: string } }) {
-  const { lang } = params; // 获取当前语言
-
-  // 请求菜单数据
-  const menusResponse = await fetchAPI(`/menus?locale=${lang}`);
-  const menuData = menusResponse.data || [];
-
-  return {
-    props: {
-      lang,
-      menuData,  // 返回数据传递给组件
-    },
-  };
-}
-
-
 export default async function Home({ lang }: { lang: string; menuData: any[] }) {
   console.log('当前语言', lang)
   const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
