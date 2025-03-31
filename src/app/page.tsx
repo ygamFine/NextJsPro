@@ -44,6 +44,45 @@ export async function getStaticProps({ params }: any) {
   };
 }
 
+
+
+
+
+
+
+
+// Next.js will invalidate the cache when a
+// request comes in, at most once every 60 seconds.
+export const revalidate = 60
+ 
+// We'll prerender only the params from `generateStaticParams` at build time.
+// If a request comes in for a path that hasn't been generated,
+// Next.js will server-render the page on-demand.
+export const dynamicParams = true // or false, to 404 on unknown paths
+ 
+export async function generateStaticParams() {
+  const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+  const menu = await fetch(process.env.NEXT_PUBLIC_STRAPI_API_URL + '/menus', {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+  }).then((res) =>
+    res.json()
+  )
+  return menu.map((item:  any) => ({
+    lable: item.lable,
+  }))
+}
+
+
+
+
+
+
+
+
+
 export default function Home({ menuData, i18nResponse, lang }: any) {
   return (
     <div className="home min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
