@@ -2,11 +2,9 @@ import { fetchAPI } from "../../utils/fetch-api";
 import "@/app/style/home.css";
 import Link from 'next/link';
 export default async function DetailPage({
-    params,
-    searchParams
+    params
   }: {
     params: { id: string };
-    searchParams: { [key: string]: string | string[] | undefined };
   }) {
     
  const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
