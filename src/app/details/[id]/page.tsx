@@ -12,7 +12,7 @@ export default async function DetailPage({
 
     const options = { headers: { Authorization: `Bearer ${token}` } };
     const { id } = await params
-    const newsResponse = await fetchAPI(`/authors/${id}?populate=*`, {}, {
+    const newsResponse = await fetchAPI(`/authors/${id}?populate[0]=avatar`, {}, {
       ...options,
       next: {
         tags: ['prod'],
@@ -23,7 +23,7 @@ export default async function DetailPage({
     console.log(newsData)
 
 
-    const prodResponse = await fetchAPI(`/authors?populate=*`, {}, {
+    const prodResponse = await fetchAPI(`/authors?populate[0]=avatar`, {}, {
         ...options,
         next: {
           tags: ['prod'],
