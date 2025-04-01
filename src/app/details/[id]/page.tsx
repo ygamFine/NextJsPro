@@ -1,6 +1,7 @@
 import { fetchAPI } from "../../utils/fetch-api";
 import "@/app/style/home.css";
 import Link from 'next/link';
+import Image from "next/image";
 export default async function DetailPage({
     params
   }: {
@@ -35,7 +36,8 @@ export default async function DetailPage({
     return (
       <div className="details">
         <h1>{newsData.name}</h1>
-        <img src={newsData.avatar.url} alt={newsData.avatar.alternativeText} />
+
+        <Image src={newsData.avatar.url} alt={newsData.avatar.alternativeText || "Gallery Image"} width={200} height={200} priority />
         {/* 其他详情内容 */}
         <h2>其他相关产品</h2>
         <ul className="flex">
@@ -44,7 +46,7 @@ export default async function DetailPage({
             <li className="m-8" key={index}>
               <Link href={`/details/${item.documentId}`} passHref>
               {item.name}
-              <img src={item.avatar.url} alt="" />
+                <Image src={item.avatar.url} alt={item.avatar.alternativeText || "Gallery Image"} width={145} height={145} priority />
               </Link>
             </li>
           ))

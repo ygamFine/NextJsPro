@@ -64,9 +64,8 @@ export default async function Home({ params }: any) {
             <li className="m-8" key={index}>
               <Link href={`/details/${item.documentId}`} passHref>
               {item.name}
-              <Image src={item.avatar.url} alt={item.attributes.alternativeText || "Gallery Image"} width={145} height={145} priority />
+              <Image src={item.avatar.url} alt={item.avatar.alternativeText || "Gallery Image"} width={145} height={145} priority />
               </Link>
-
             </li>
           ))
         }
