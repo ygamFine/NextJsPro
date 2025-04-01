@@ -1,6 +1,7 @@
 import { fetchAPI } from "./utils/fetch-api";
 import PageHeader from "./components/PageHeader";
 import "@/app/style/home.css";
+import next from "next";
 
 // ✅ 1. 生成 SSG 静态页面参数（支持多语言）
 export async function generateStaticParams() {
@@ -20,11 +21,28 @@ export default async function Home({ params }: any) {
   const options = { headers: { Authorization: `Bearer ${token}` } };
 
   // 获取所有语言列表
-  const i18nResponse = await fetchAPI("/i18n/locales", { next: { revalidate: 60 } });
+  const i18nResponse = await fetchAPI("/i18n/locales", {}, options);
 
   // 获取当前语言的菜单数据（60 秒后自动刷新）
-  const menusResponse = await fetchAPI(`/menus?locale=${lang || "en"}`, { next: { revalidate: 60 } });
+  const menusResponse = await fetchAPI(`/menus`, {locale: lang || "en"}, {
+    ...options,
+    next: {
+      tags: ['menu'],
+      revalidate: 60
+    }
+  });
   const menuData = menusResponse?.data || [];
+  console.log(menuData)
+
+  const newsResponse = await fetchAPI(`/authors?populate=*`, {}, {
+    ...options,
+    next: {
+      tags: ['prod'],
+      revalidate: 60
+    }
+  })
+  const newsData = newsResponse?.data || [];
+  console.log(newsData)
 
   return (
     <div className="home min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
@@ -38,8 +56,18 @@ export default async function Home({ params }: any) {
           </li>
         ))}
       </ul>
-
-      <main className="">内容</main>
+      <main className="">
+        <ul className="flex">
+        {
+          newsData.map((item: any, index: number) => (
+            <li className="m-8" key={index}>
+              {item.name}
+              <img src={item.avatar.url} alt="" />
+            </li>
+          ))
+        }
+        </ul>
+      </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">底部</footer>
     </div>
   );

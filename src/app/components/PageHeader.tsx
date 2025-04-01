@@ -21,7 +21,7 @@ export default function PageHeader({ i18n, currentLang }: PageHeaderProps) {
         <div>Welcome to 1xxxxxxx Machinery. Co., Ltd</div>
         <div>
           <select onChange={handleLangChange} value={currentLang}>
-            {i18n.map((item) => (
+            {i18n && i18n?.map((item) => (
               <option key={item.code} value={item.code}>
                 {item.name}
               </option>
