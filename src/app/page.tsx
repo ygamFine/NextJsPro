@@ -1,6 +1,7 @@
 import { fetchAPI } from "./utils/fetch-api";
 import PageHeader from "./components/PageHeader";
 import Link from 'next/link';
+import Image from "next/image";
 import "@/app/style/home.css";
 
 // ✅ 1. 生成 SSG 静态页面参数（支持多语言）
@@ -63,7 +64,7 @@ export default async function Home({ params }: any) {
             <li className="m-8" key={index}>
               <Link href={`/details/${item.documentId}`} passHref>
               {item.name}
-              <img src={item.avatar.url} alt="" />
+              <Image src={item.avatar.url} alt={item.attributes.alternativeText || "Gallery Image"} width={145} height={145} priority />
               </Link>
 
             </li>
