@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default async function DetailPage({
     params
   }: {
-    params: { id: string };
+    params: any;
   }) {
     
  const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
