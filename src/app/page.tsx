@@ -1,7 +1,7 @@
 import { fetchAPI } from "./utils/fetch-api";
 import PageHeader from "./components/PageHeader";
+import Link from 'next/link';
 import "@/app/style/home.css";
-import next from "next";
 
 // ✅ 1. 生成 SSG 静态页面参数（支持多语言）
 export async function generateStaticParams() {
@@ -61,8 +61,11 @@ export default async function Home({ params }: any) {
         {
           newsData.map((item: any, index: number) => (
             <li className="m-8" key={index}>
+              <Link href={`/details/${item.documentId}`} passHref>
               {item.name}
               <img src={item.avatar.url} alt="" />
+              </Link>
+
             </li>
           ))
         }

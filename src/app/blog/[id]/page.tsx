@@ -1,22 +1,8 @@
-interface Post {
-    id: string
-    title: string
-    description: string
-  }
+import { fetchAPI } from "../../utils/fetch-api";
    
-  // Next.js will invalidate the cache when a
-  // request comes in, at most once every 60 seconds.
-  export const revalidate = 60
-   
-  // We'll prerender only the params from `generateStaticParams` at build time.
-  // If a request comes in for a path that hasn't been generated,
-  // Next.js will server-render the page on-demand.
-  export const dynamicParams = true // or false, to 404 on unknown paths
    
   export async function generateStaticParams() {
-    const posts: any = await fetch('https://victorious-wisdom-f9f44dd049.strapiapp.com/api/articles').then((res) =>
-      res.json()
-    )
+    const posts: any = await fetch('/authors?populate=*')
     console.log(posts?.data)
     return posts.data.map((post: any) => ({
       id: String(post.documentId),
@@ -28,15 +14,28 @@ interface Post {
   }: {
     params: Promise<{ id: string }>
   }) {
+    const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+    if (!token) throw new Error("The Strapi API Token environment variable is not set.");
+
+    const options = { headers: { Authorization: `Bearer ${token}` } };
     const { id } = await params
-    const post = await fetch(`https://victorious-wisdom-f9f44dd049.strapiapp.com/api/articles/${id}`).then(
-      (res) => res.json()
-    )
-    console.log(post)
+    const newsResponse = await fetchAPI(`/authors/${id}`, {}, {
+      ...options,
+      next: {
+        tags: ['prod'],
+        revalidate: 60
+      }
+    })
+    const newsData = newsResponse?.data || [];
+    console.log(newsData)
+
     return (
       <main>
-        <h1>{post.title}</h1>
-        <p>{post.description}</p>
+        <h1>{newsData.title}</h1>
+        <p>{newsData.description}</p>
+        <ul>
+          <li></li>
+        </ul>
       </main>
     )
   }
