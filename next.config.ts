@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // output: 'export', // 启用静态导出
-  distDir: 'out', // 自定义输出目录
+  // distDir: 'out', // 自定义输出目录
   trailingSlash: true, // 确保URL一致性
   images: {
     unoptimized: true,
