@@ -3,6 +3,8 @@ import PageHeader from "./components/PageHeader";
 import Link from 'next/link';
 import Image from "next/image";
 import "@/app/style/home.css";
+import fs from "fs";
+import path from "path";
 
 // ✅ 1. 生成 SSG 静态页面参数（支持多语言）
 export async function generateStaticParams() {
@@ -13,6 +15,43 @@ export async function generateStaticParams() {
 
 // ✅ 2. 使用 ISR 让数据 60 秒后自动刷新
 export const revalidate = 60;
+
+
+
+// 🚀 1. 下载远程图片并存储到 `public/images`
+async function downloadImage(url: string, filename: string) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch image: ${url}`);
+
+  const buffer = await res.arrayBuffer();
+  const filePath = path.join(process.cwd(), "public", "images", filename);
+
+  fs.writeFileSync(filePath, Buffer.from(buffer)); // 保存图片
+}
+
+// 🚀 2. 获取 Strapi 图片并存储到 `public/`
+async function getImages(images: any) {
+
+
+  for (const img of images) {
+    const imageUrl = `${img.avatar.url}`;
+    const filename = path.basename(img.avatar.url); // "image1.jpg"
+    const filePath = path.join("public", "images", filename);
+
+    // ✅ 只有当文件不存在时才下载，避免重复下载
+    if (!fs.existsSync(filePath)) {
+      console.log(`Downloading new image: ${filename}`);
+      await downloadImage(imageUrl, filename);
+    }
+
+    img.localPath = `/images/${filename}`; // 绑定本地路径
+  }
+
+  return images;
+}
+
+
+
 
 export default async function Home({ params }: any) {
   const { lang } = params;
@@ -42,8 +81,11 @@ export default async function Home({ params }: any) {
       revalidate: 60
     }
   })
-  const newsData = newsResponse?.data || [];
+  const newsData = await getImages(newsResponse?.data) || [];
   console.log(newsData)
+
+
+  
 
   return (
     <div className="home min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
@@ -64,7 +106,7 @@ export default async function Home({ params }: any) {
             <li className="m-8" key={index}>
               <Link href={`/details/${item.documentId}`} passHref>
               {item.name}
-              <Image src={item.avatar.url} alt={item.avatar.alternativeText || "Gallery Image"} width={145} height={145} priority />
+              <Image src={item.localPath} alt={item.avatar.alternativeText || "Gallery Image"} width={145} height={145} priority />
               </Link>
             </li>
           ))
