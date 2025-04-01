@@ -34,7 +34,7 @@ export default async function Home({ params }: any) {
   const menuData = menusResponse?.data || [];
   console.log(menuData)
 
-  const newsResponse = await fetchAPI(`/authors?populate=*`, {}, {
+  const newsResponse = await fetchAPI(`/authors?populate[0]=avatar`, {}, {
     ...options,
     next: {
       tags: ['prod'],
